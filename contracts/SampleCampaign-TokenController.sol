@@ -1,4 +1,4 @@
-pragma solidity ^0.4.6;
+pragma solidity ^0.5;
 
 /*
     Copyright 2017, Jordi Baylina
@@ -24,7 +24,7 @@ pragma solidity ^0.4.6;
 ///  funds for non-profit causes, but it can be customized for any variety of
 ///  purposes.
 
-import "MiniMeToken.sol";
+import "./MiniMeToken.sol";
 
 
 /// @dev `Owned` is a base level contract that assigns an `owner` that can be
@@ -37,12 +37,12 @@ contract Owned {
     address public owner;
 
     /// @notice The Constructor assigns the message sender to be `owner`
-    function Owned() { owner = msg.sender;}
+    constructor() public { owner = msg.sender;}
 
     /// @notice `owner` can step down and assign some other address to this role
     /// @param _newOwner The address of the new owner. 0x0 can be used to create
     ///  an unowned neutral vault, however that cannot be undone
-    function changeOwner(address _newOwner) onlyOwner {
+    function changeOwner(address _newOwner) public onlyOwner {
         owner = _newOwner;
     }
 }
@@ -59,7 +59,7 @@ contract Campaign is TokenController, Owned {
     uint public maximumFunding;         // In wei
     uint public totalCollected;         // In wei
     MiniMeToken public tokenContract;   // The new token for this Campaign
-    address public vaultAddress;        // The address to hold the funds donated
+    address payable public vaultAddress;        // The address to hold the funds donated
 
 /// @notice 'Campaign()' initiates the Campaign by setting its funding
 /// parameters
@@ -73,18 +73,18 @@ contract Campaign is TokenController, Owned {
 /// @param _vaultAddress The address that will store the donated funds
 /// @param _tokenAddress Address of the token contract this contract controls
 
-    function Campaign(
+    constructor(
         uint _startFundingTime,
         uint _endFundingTime,
         uint _maximumFunding,
-        address _vaultAddress,
-        address _tokenAddress
+        address payable _vaultAddress,
+        address payable _tokenAddress
 
-    ) {
+    ) public {
         require ((_endFundingTime >= now) &&           // Cannot end in the past
             (_endFundingTime > _startFundingTime) &&
             (_maximumFunding <= 10000 ether) &&        // The Beta is limited
-            (_vaultAddress != 0));                    // To prevent burning ETH
+            (_vaultAddress != address(0)));                    // To prevent burning ETH
         startFundingTime = _startFundingTime;
         endFundingTime = _endFundingTime;
         maximumFunding = _maximumFunding;
@@ -97,7 +97,7 @@ contract Campaign is TokenController, Owned {
 /// `_owner`. Payable is a required solidity modifier for functions to receive
 /// ether, without this modifier functions will throw if ether is sent to them
 
-    function ()  payable {
+    function () external payable {
         doPayment(msg.sender);
     }
 
@@ -109,7 +109,7 @@ contract Campaign is TokenController, Owned {
 /// have the tokens created in an address of their choosing
 /// @param _owner The address that will hold the newly created tokens
 
-    function proxyPayment(address _owner) payable returns(bool) {
+    function proxyPayment(address _owner) public payable returns(bool) {
         doPayment(_owner);
         return true;
     }
@@ -120,7 +120,7 @@ contract Campaign is TokenController, Owned {
 /// @param _to The destination of the transfer
 /// @param _amount The amount of the transfer
 /// @return False if the controller does not authorize the transfer
-    function onTransfer(address _from, address _to, uint _amount) returns(bool) {
+    function onTransfer(address _from, address _to, uint _amount) public returns(bool) {
         return true;
     }
 
@@ -130,7 +130,7 @@ contract Campaign is TokenController, Owned {
 /// @param _spender The spender in the `approve()` call
 /// @param _amount The amount in the `approve()` call
 /// @return False if the controller does not authorize the approval
-    function onApprove(address _owner, address _spender, uint _amount)
+    function onApprove(address _owner, address _spender, uint _amount) public
         returns(bool)
     {
         return true;
@@ -147,7 +147,7 @@ contract Campaign is TokenController, Owned {
 // First check that the Campaign is allowed to receive this donation
         require ((now >= startFundingTime) &&
             (now <= endFundingTime) &&
-            (tokenContract.controller() != 0) &&           // Extra check
+            (tokenContract.controller() != address(0)) &&           // Extra check
             (msg.value != 0) &&
             (totalCollected + msg.value <= maximumFunding));
 
@@ -169,16 +169,16 @@ contract Campaign is TokenController, Owned {
 ///  Campaign from receiving more ether
 /// @dev `finalizeFunding()` can only be called after the end of the funding period.
 
-    function finalizeFunding() {
+    function finalizeFunding() public {
         require(now >= endFundingTime);
-        tokenContract.changeController(0);
+        tokenContract.changeController(address(0));
     }
 
 
 /// @notice `onlyOwner` changes the location that ether is sent
 /// @param _newVaultAddress The address that will receive the ether sent to this
 ///  Campaign
-    function setVault(address _newVaultAddress) onlyOwner {
+    function setVault(address payable _newVaultAddress) public onlyOwner {
         vaultAddress = _newVaultAddress;
     }
 
