@@ -3,7 +3,7 @@ pragma solidity ^0.5;
 contract Controlled {
     /// @notice The address of the controller is the only address that can call
     ///  a function with this modifier
-    modifier onlyController { require(msg.sender == controller, "Only the controller can execute this."); _; }
+    modifier onlyController {require(msg.sender == controller, "Only the controller can execute this."); _;}
 
     address payable public controller;
 

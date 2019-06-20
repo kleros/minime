@@ -17,6 +17,17 @@
     "cz": "kathari cz",
     "build": "truffle compile --all"
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "kathari precommit",
+      "commit-msg": "kathari commitmsg"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ferittuncer/minime.git"
@@ -43,6 +54,7 @@
     "@kleros/kathari": "^0.23.0",
     "eth-gas-reporter": "^0.2.0",
     "ganache-cli": "^6.4.4",
+    "husky": "^2.4.1",
     "truffle": "^5.0.22"
   }
 }
