@@ -2,20 +2,31 @@
   "name": "minimetoken_solcv5",
   "version": "1.0.0",
   "description": "MiniMe contract",
+  "keywords": [
+    "dao",
+    "solidity",
+    "token",
+    "charity",
+    "smart",
+    "contract",
+    "minime",
+    "giveth",
+    "ethereum"
+  ],
   "main": "dist/minimetoken.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "prettify": "kathari prettify",
-    "lint:sol": "kathari lint:sol",
-    "lint:js": "kathari lint:js",
+    "prettify": "yarn run kathari prettify",
+    "lint:sol": "yarn run kathari lint:sol",
+    "lint:js": "yarn run kathari lint:js",
     "lint": "yarn run lint:sol && yarn run lint:js",
-    "test:ganache": "ganache-cli --gasLimit 8000000  --defaultBalanceEther 10000 --quiet &",
-    "test:truffle": "truffle test",
-    "test": "run-p test:*",
-    "cz": "kathari cz",
-    "build": "truffle compile --all"
+    "test:ganache": "yarn run ganache-cli --gasLimit 8000000  --defaultBalanceEther 10000 --quiet &",
+    "test:truffle": "yarn runtruffle test",
+    "test": "yarn run run-p test:*",
+    "cz": "yarn run kathari cz",
+    "build": "yarn run truffle compile --all"
   },
   "commitlint": {
     "extends": [
@@ -32,17 +43,6 @@
     "type": "git",
     "url": "https://github.com/ferittuncer/minime.git"
   },
-  "keywords": [
-    "dao",
-    "solidity",
-    "token",
-    "charity",
-    "smart",
-    "contract",
-    "minime",
-    "giveth",
-    "ethereum"
-  ],
   "author": "Kleros",
   "license": "GPL-3.0",
   "bugs": {
@@ -55,6 +55,7 @@
     "eth-gas-reporter": "^0.2.0",
     "ganache-cli": "^6.4.4",
     "husky": "^2.4.1",
+    "npm-run-all": "^4.1.5",
     "truffle": "^5.0.22"
   }
 }
