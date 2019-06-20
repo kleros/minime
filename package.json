@@ -3,15 +3,11 @@
   "version": "1.0.0",
   "description": "MiniMe contract",
   "keywords": [
-    "dao",
-    "solidity",
-    "token",
-    "charity",
-    "smart",
-    "contract",
+    "blockchain",
+    "smart-contracts",
+    "ethereum",
     "minime",
-    "giveth",
-    "ethereum"
+    "erc-20"
   ],
   "main": "dist/minimetoken.js",
   "directories": {
@@ -23,7 +19,7 @@
     "lint:js": "yarn run kathari lint:js",
     "lint": "yarn run lint:sol && yarn run lint:js",
     "test:ganache": "yarn run ganache-cli --gasLimit 8000000  --defaultBalanceEther 10000 --quiet &",
-    "test:truffle": "yarn runtruffle test",
+    "test:truffle": "yarn run truffle test",
     "test": "yarn run run-p test:*",
     "cz": "yarn run kathari cz",
     "build": "yarn run truffle compile --all"
@@ -43,6 +39,17 @@
     "type": "git",
     "url": "https://github.com/ferittuncer/minime.git"
   },
+  "keywords": [
+    "dao",
+    "solidity",
+    "token",
+    "charity",
+    "smart",
+    "contract",
+    "minime",
+    "giveth",
+    "ethereum"
+  ],
   "author": "Kleros",
   "license": "GPL-3.0",
   "bugs": {
@@ -55,7 +62,6 @@
     "eth-gas-reporter": "^0.2.0",
     "ganache-cli": "^6.4.4",
     "husky": "^2.4.1",
-    "npm-run-all": "^4.1.5",
     "truffle": "^5.0.22"
   }
 }
