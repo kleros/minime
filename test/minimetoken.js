@@ -1,24 +1,14 @@
+/* eslint-disable no-undef */ // Avoid the linter considering truffle elements as undef.
 const MiniMeToken = artifacts.require('MiniMeToken')
 const MiniMeTokenFactory = artifacts.require('MiniMeTokenFactory')
 
 const BN = web3.utils.BN
-const toBN = web3.utils.toBN
-
-const verbose = false
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
-const log = S => {
-  if (verbose) {
-    console.log(S)
-  }
-}
-
 contract('MiniMeToken', function(accounts) {
   let miniMeToken
-  let miniMeTokenState
   let miniMeTokenClone
-  let miniMeTokenCloneState
   const b = []
   const controller = accounts[0]
 
@@ -112,7 +102,7 @@ contract('MiniMeToken', function(accounts) {
       true
     )
 
-    let addr = miniMeTokenCloneTx.logs[0].address
+    const addr = miniMeTokenCloneTx.logs[0].address
     miniMeTokenClone = await MiniMeToken.at(addr)
 
     b[5] = await web3.eth.getBlockNumber()
@@ -123,13 +113,10 @@ contract('MiniMeToken', function(accounts) {
         _result
       ) {})
 
-    //assert.equal(miniMeToken.address, await miniMeTokenClone.parentToken())
+    // assert.equal(miniMeToken.address, await miniMeTokenClone.parentToken())
     assert(new BN(b[5]).eq(await miniMeTokenClone.parentSnapShotBlock()))
     assert(new BN('7').eq(await miniMeTokenClone.totalSupply()))
     assert(new BN('6').eq(await miniMeTokenClone.balanceOf(accounts[1])))
-
-    const totalSupply = await miniMeTokenClone.totalSupplyAt(b[4])
-
     assert(new BN('7').eq(await miniMeTokenClone.totalSupplyAt(b[4])))
 
     const balance = await miniMeTokenClone.balanceOfAt(accounts[2], b[4])
