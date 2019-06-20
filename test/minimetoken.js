@@ -1,6 +1,3 @@
-/* eslint-env mocha */
-/* eslint-disable no-await-in-loop */
-
 const MiniMeToken = artifacts.require('MiniMeToken')
 const MiniMeTokenFactory = artifacts.require('MiniMeTokenFactory')
 
